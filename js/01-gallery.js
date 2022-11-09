@@ -4,20 +4,17 @@ import { galleryItems } from "./gallery-items.js";
 // console.log(galleryItems);
 
 const galleryRef = document.querySelector(".gallery");
-
-const createGalleryMarkup = createGallery(galleryItems);
-galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup);
-
+galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup(galleryItems));
 galleryRef.addEventListener("click", openModalWindow);
-// document.addEventListener("keydown", closeModalWindowByEsc);
 
-function createGallery(items) {
+// === FUNCTION
+function createGalleryMarkup(items) {
   return items
-    .map((item) => {
-      return `<a class="gallery__link" href="${item.original}">
+    .map(
+      (item) => `<a class="gallery__link" href="${item.original}">
       <img class="gallery__image" src="${item.preview}" alt="${item.description}" data-source="${item.original}"/>
-      </a>`;
-    })
+      </a>`
+    )
     .join("");
 }
 
@@ -27,20 +24,22 @@ function openModalWindow(evt) {
     return;
   }
 
-  createOriginalImage(evt.target.dataset.source);
+  showOriginalImage(evt.target.dataset.source);
 }
 
-function createOriginalImage(item) {
-  const instance = basicLightbox.create(`<img src="${item}">`, {});
+function showOriginalImage(item) {
+  const instance = basicLightbox.create(`<img src="${item}">`);
   instance.show();
+
+  closeModalWindowByEsc(instance);
 }
 
-// function closeModalWindowByEsc(evt) {
-//   if (evt.code !== "Escape") {
-//     return;
-//   }
-//   console.log(evt.code);
-
-//   const visible = basicLightbox.visible();
-//   console.log(visible);
-// }
+function closeModalWindowByEsc(instance) {
+  document.addEventListener("keydown", (evt) => {
+    if (evt.code !== "Escape") {
+      return;
+    }
+    // console.log(evt.code);
+    instance.close();
+  });
+}
