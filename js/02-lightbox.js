@@ -1,14 +1,19 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
+// console.log(galleryItems);
 
 const galleryRef = document.querySelector(".gallery");
 
 const createGalleryMarkup = createGallery(galleryItems);
 galleryRef.insertAdjacentHTML("beforeend", createGalleryMarkup);
 
-galleryRef.addEventListener("click", openModalWindow);
+galleryRef.addEventListener("click", openOriginalImage);
+
+const lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+});
 
 function createGallery(items) {
   return items
@@ -20,18 +25,10 @@ function createGallery(items) {
     .join("");
 }
 
-function openModalWindow(evt) {
+function openOriginalImage(evt) {
   evt.preventDefault();
   if (evt.target.nodeName !== "IMG") {
     return;
   }
-
-  createLightbox();
-}
-
-function createLightbox() {
-  const lightbox = new SimpleLightbox(".gallery a", {
-    captionsData: "alt",
-    captionDelay: 250,
-  });
+  // console.log(evt.target);
 }
